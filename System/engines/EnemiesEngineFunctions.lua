@@ -38,7 +38,6 @@ function br:updateOM()
 	local om = br.om
 	local startTime = br._G.debugprofilestop()
 	wipe(br.tracking)
-
 	local objUnit
 	local name
 	local objectid
@@ -115,8 +114,8 @@ end
 
 function br.isInOM(thisUnit)
 	if #br.om == 0 then return false end
+	local thisX, thisY, thisZ = br._G.ObjectPosition(thisUnit)
 	for i = 1, #br.om do
-		local thisX, thisY, thisZ = br._G.ObjectPosition(thisUnit)
 		local omX, omY, omZ = br._G.ObjectPosition(br.om[i].guid)
 		if --[[br.om[i].guid == thisUnit and]] thisX == omX and thisY == omY and thisZ == omZ then return true end
 	end

@@ -35,6 +35,7 @@ misc.xml
 ## System
 
 System\Unlockers.lua
+System\Cache.lua
 System\Core.lua
 System\Debugging.lua
 System\LootManager.lua
