@@ -282,7 +282,7 @@ for i = 1, #globalCacheList do
 end
 -- print("NN File Called")
 function br.unlock:NNUnlock()
-	if type(Nn)~="table" then return false end
+	if not C_Timer.Nn then return false end
 	setfenv(1, Nn)
 	-- print("NN Api Loaded")
 	--------------------------------
@@ -311,7 +311,7 @@ function br.unlock:NNUnlock()
 	b.CreateDirectory = CreateDirectory
 	b.GetKeyState = GetKeyState
 	b.ObjectName = ObjectName
-	-- b.GetObjectWithIndex = ObjectByIndex
+	b.GetObjectWithIndex = ObjectByIndex
 	b.ObjectPosition = ObjectPosition
 	b.UnitMovementFlags = UnitMovementFlag
 	-- b.GetWoWDirectory = GetWowDirectory
@@ -319,7 +319,7 @@ function br.unlock:NNUnlock()
 	b.ObjectExists = ObjectExists
 	b.GetCameraPosition = GetCameraPosition
 	b.UnitFacing = ObjectFacing
-	b.ObjectPointer = ObjectPointer
+	-- b.ObjectPointer = ObjectPointer
 	-- b.TraceLine = TraceLine
 
 	b.GetMousePosition = b.GetCursorPosition
@@ -337,30 +337,16 @@ function br.unlock:NNUnlock()
 		if unit == nil then return CastSpellByName(spellName) end --b.print("No unit provided to CastSpellByName") end
 		return BRCastSpellByName(spellName, unit)
 	end
-
-	b.ObjectID = function(unit)
-		if unit == nil then return nil end
-		if (type(unit) == "string") then
-			local guid = UnitGUID(unit)
-			if guid == nil then return nil end
-			local _, _, _, _, _, npc_id = strsplit('-', guid)
-			return tonumber(npc_id)
-		end
-		return ObjectID(unit)
+	b.ObjectPointer = function(unit)
+		return type(unit) == "number" and unit or ObjectPointer(unit)
 	end
 
-	b.UnitTarget = function(unit)
-		return UnitTarget(unit)
-	end
-	b.UnitCreator = function(unit)
-		return UnitCreator(unit)
-	end
-	b.UnitBoundingRadius = function(unit)
-		return ObjectBoundingRadius(unit)
-	end
-	b.UnitCombatReach = function(unit)
-		return CombatReach(unit)
-	end
+	b.ObjectID = ObjectID
+
+	b.UnitTarget = UnitTarget
+	b.UnitCreator = UnitCreator
+	b.UnitBoundingRadius = ObjectBoundingRadius
+	b.UnitCombatReach = CombatReach
 
 
 	--------------------------------
@@ -372,7 +358,6 @@ function br.unlock:NNUnlock()
 	b.GetObjectCount = function()
 		return #Objects()
 	end
-	b.GetObjectWithIndex = ObjectByIndex
 	b.ObjectType = ObjectType
 	b.ObjectIsUnit = function(obj)
 		local ObjType = b.ObjectType(obj)
