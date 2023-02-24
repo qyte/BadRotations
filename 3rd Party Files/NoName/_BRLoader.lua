@@ -1,5 +1,46 @@
 local NoName = ...
 if --[[(...).name ~= "NoName" or]] NoName.Utils == nil then return end
+
+local doprintfiles = (function()
+    local printed = false
+    return function()
+        if printed then return end
+        print('[BR] Copying Media files and reloading...')
+        printed = true
+    end
+end)()
+
+local function CopyMedia()
+    local mediaPath = '/scripts/BadRotations/3rd Party Files/Media/'
+    local wowMediaPath = 'Interface/Addons/Media/'
+    if not DirectoryExists(mediaPath) then error(format('Cannot find Media Directory "%s"', mediaPath), 2) end
+    local needreload = false
+
+    if not DirectoryExists(wowMediaPath) then
+        doprintfiles()
+        needreload = true
+        CreateDirectory(wowMediaPath)
+        if not DirectoryExists(wowMediaPath) then error('Cannot Create "Interface\\Addons\\Media" Directory') end
+    end
+    local files = ListFiles(mediaPath .. '*')
+    for _, v in pairs(files) do
+        if FileExists(mediaPath .. v) and not FileExists(wowMediaPath .. v) then -- exclude '.' and '..' folders cause they error
+            doprintfiles()
+            needreload = true
+            local data = ReadFile(mediaPath .. v)
+            if data then
+                WriteFile(wowMediaPath .. v, data)
+            end
+            if not FileExists(wowMediaPath .. v) then error(format('Cannot Create Media File "%s"',v)) end
+        end
+    end
+    if needreload and not InGlue() then C_Timer.After(2,function() Unlock('ReloadUI') end) return false end
+    return true
+end
+
+if not securecall(CopyMedia) then return end
+if InGlue() then return end
+
 local read   = NoName.Utils.Storage.read
 local write  = NoName.Utils.Storage.write
 local JSON   = NoName.Utils.JSON
@@ -7,44 +48,6 @@ local AceGUI = NoName.Utils.AceGUI
 local toc = ReadFile('/scripts/BadRotations/BadRotations.toc')
 local br = {}
 br.files = {}
-
--- Resource Files (Image/Font)
-br.files[#br.files+1] = {file = 'BadRotations/Libs/!LibDraw/Media/LineTemplate.tga', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/calibrib.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/DejaVuSansMono-Bold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/DejaVuSansMono.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/DiesalButtonIcons32x128x512.tga', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/DiesalGUIcons16x256x128.tga', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/DiesalGUIcons32x256x256.tga', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/DiesalGUIcons64x256x256.tga', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/FFF Intelligent Thin Condensed.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/FiraMono-Bold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/FiraMono-Medium.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/FiraMono-Regular.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/FiraSans-Regular.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/Hack-Bold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/Hack-Regular.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/Inconsolata-Bold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/Inconsolata-Regular.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/LUCON-.TTF', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/monof55.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/monof56.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/OfficeCodeProp-Bold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/OfficeCodeProp-Medium.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/OfficeCodeProp-Regular.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/RobotoMono-Bold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/RobotoMono-Medium.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/RobotoMono-Regular.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/shadow.tga', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/shadowNoDist.tga', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/SourceCodePro-Black.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/SourceCodePro-Bold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/SourceCodePro-Medium.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/SourceCodePro-Regular.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/SourceCodePro-Semibold.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/Standard0755.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/UbuntuMono-B.ttf', load = true}
-br.files[#br.files+1] = {file = 'BadRotations/Libs/DiesalStyle-1.0/Media/UbuntuMono-R.ttf', load = true}
 
 -- Add Lua Files from .toc
 for line in toc:gmatch("([^\n]*)\n?") do

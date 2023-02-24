@@ -223,7 +223,7 @@ local globalCacheList =
 --------------------------------------------------------------------------------------------------------------------------------
 -- functions exported to BadRotations
 --------------------------------------------------------------------------------------------------------------------------------
-local _, br = ...
+local Nn, br = ...
 local b = br._G
 local unlock = br.unlock
 local funcCopies = {}
@@ -282,17 +282,18 @@ for i = 1, #globalCacheList do
 end
 -- print("NN File Called")
 function br.unlock:NNUnlock()
-	if not C_Timer.Nn then return false end
-	setfenv(1, C_Timer.Nn)
+	if type(Nn)~="table" then return false end
+	setfenv(1, Nn)
 	-- print("NN Api Loaded")
 	--------------------------------
 	-- API unlocking
 	--------------------------------
+	local Unlock = Unlock
 	for k, v in pairs(funcCopies) do
 		b[k] = function(...) return Unlock(k, ...) end
 	end
 	for _, v in pairs(globalCacheList) do
-		b[v] = C_Timer.Nn[v]
+		b[v] = Nn[v]
 	end
 	for k, v in pairs(globalFuncCopies) do
 		if not b[k] then
@@ -303,11 +304,11 @@ function br.unlock:NNUnlock()
 	--------------------------------
 	-- API copy/rename/unlock
 	--------------------------------
-	-- b.ReadFile = ReadFile
-	-- b.DirectoryExists = DirectoryExists
-	-- b.WriteFile = WriteFile
+	b.ReadFile = ReadFile
+	b.DirectoryExists = DirectoryExists
+	b.WriteFile = WriteFile
 	b.ClickPosition = ClickPosition
-	-- b.CreateDirectory = CreateDirectory
+	b.CreateDirectory = CreateDirectory
 	b.GetKeyState = GetKeyState
 	b.ObjectName = ObjectName
 	-- b.GetObjectWithIndex = ObjectByIndex
@@ -318,7 +319,7 @@ function br.unlock:NNUnlock()
 	b.ObjectExists = ObjectExists
 	b.GetCameraPosition = GetCameraPosition
 	b.UnitFacing = ObjectFacing
-	-- b.ObjectPointer = ObjectPointer
+	b.ObjectPointer = ObjectPointer
 	-- b.TraceLine = TraceLine
 
 	b.GetMousePosition = b.GetCursorPosition
@@ -335,10 +336,6 @@ function br.unlock:NNUnlock()
 	b.CastSpellByName = function(spellName, unit)
 		if unit == nil then return CastSpellByName(spellName) end --b.print("No unit provided to CastSpellByName") end
 		return BRCastSpellByName(spellName, unit)
-	end
-
-	b.ObjectPointer = function(unit)
-		return type(unit) == "number" and unit or ObjectPointer(unit)
 	end
 
 	b.ObjectID = function(unit)
@@ -372,20 +369,14 @@ function br.unlock:NNUnlock()
 	b.GetWoWDirectory = function()
 		return "\\scripts"
 	end
-	local om = {}
 	b.GetObjectCount = function()
-		om = Objects()
 		return #Objects()
 	end
-	b.GetObjectWithIndex = function(index)
-		return om[index]--ObjectByIndex(index)
-	end
-	b.ObjectType = function(...)
-		return ObjectType(...)
-	end
-	b.ObjectIsUnit = function(...)
-		local ObjType = ObjectType(...)
-		return ObjType == 5
+	b.GetObjectWithIndex = ObjectByIndex
+	b.ObjectType = ObjectType
+	b.ObjectIsUnit = function(obj)
+		local ObjType = b.ObjectType(obj)
+		return ObjType == 5-- or ObjType == 6 or ObjType == 7
 	end
 	b.UnitCastID = function(...)
 		local spellId1 = select(9, b.UnitCastingInfo(...)) or 0
@@ -412,23 +403,6 @@ function br.unlock:NNUnlock()
 		end
 		return stringsplit(returnFiles, "|")
 	end
-	b.ReadFile = function(...)
-		local path = ...--fixPath(...)
-		return ReadFile(path)
-	end
-	b.WriteFile = function(...)
-		local file, data, append = ...
-		local path = file --fixPath(file)
-		return WriteFile(path, data, append)
-	end
-	b.CreateDirectory = function(...)
-		local path = ... --fixPath(...)
-		return CreateDirectory(path)
-	end
-	b.DirectoryExists = function(...)
-		local path = ... --fixPath(...)
-		return DirectoryExists(path)
-	end
 	b.WorldToScreen = function(...)
 		local multiplier = UIParent:GetScale()
 		local sX, sY = WorldToScreen(...)
@@ -449,22 +423,32 @@ function br.unlock:NNUnlock()
 	--------------------------------
 	-- math
 	--------------------------------
+	local math = math
 	b.GetDistanceBetweenPositions = function(X1, Y1, Z1, X2, Y2, Z2)
-		return math.sqrt(math.pow(X2 - X1, 2) + math.pow(Y2 - Y1, 2) + math.pow(Z2 - Z1, 2))
+		X2 = X2 - X1
+		Y2 = Y2 - Y1
+		Z2 = Z2 - Z1
+		return math.sqrt(X2*X2 + Y2*Y2 + Z2*Z2)
 	end
 	b.GetAnglesBetweenObjects = function(Object1, Object2)
 		if Object1 and Object2 then
 			local X1, Y1, Z1 = b.ObjectPosition(Object1)
 			local X2, Y2, Z2 = b.ObjectPosition(Object2)
-			return math.atan2(Y2 - Y1, X2 - X1) % (math.pi * 2),
-				math.atan((Z1 - Z2) / math.sqrt(math.pow(X1 - X2, 2) + math.pow(Y1 - Y2, 2))) % math.pi
+			X2 = X2 - X1
+			Y2 = Y2 - Y1
+			Z2 = Z1 - Z2
+			return math.atan2(Y2, X2) % (math.pi * 2),
+				math.atan(Z2 / math.sqrt(X2*X2 + Y2*Y2)) % math.pi
 		else
 			return 0, 0
 		end
 	end
 	b.GetAnglesBetweenPositions = function(X1, Y1, Z1, X2, Y2, Z2)
-		return math.atan2(Y2 - Y1, X2 - X1) % (math.pi * 2),
-			math.atan((Z1 - Z2) / math.sqrt(math.pow(X1 - X2, 2) + math.pow(Y1 - Y2, 2))) % math.pi
+		X2 = X2 - X1
+		Y2 = Y2 - Y1
+		Z2 = Z1 - Z2
+		return math.atan2(Y2, X2) % (math.pi * 2),
+			math.atan(Z2 / math.sqrt(X2*X2 + Y2*Y2)) % math.pi
 	end
 	b.GetPositionFromPosition = function(X, Y, Z, Distance, AngleXY, AngleXYZ)
 		return math.cos(AngleXY) * Distance + X, math.sin(AngleXY) * Distance + Y, math.sin(AngleXYZ) * Distance + Z
@@ -483,7 +467,7 @@ function br.unlock:NNUnlock()
 	b.GetDistanceBetweenObjects = function(unit1, unit2)
 		local X1, Y1, Z1 = b.ObjectPosition(unit1)
 		local X2, Y2, Z2 = b.ObjectPosition(unit2)
-		return math.sqrt((X2 - X1) ^ 2 + (Y2 - Y1) ^ 2 + (Z2 - Z1) ^ 2)
+		return b.GetDistanceBetweenPositions(X1, Y1, Z1, X2, Y2, Z2)
 	end
 	b.ObjectIsFacing = function(obj1, obj2, degrees)
 		local Facing = b.UnitFacing(obj1)
@@ -498,8 +482,8 @@ function br.unlock:NNUnlock()
 	--------------------------------
 	b.AuraUtil = {}
 	b.AuraUtil.FindAuraByName = _G.AuraUtil["FindAuraByName"]
-	b.ObjectIsGameObject = function(...)
-		local ObjType = ObjectType(...)
+	b.ObjectIsGameObject = function(obj)
+		local ObjType = b.ObjectType(obj)
 		return ObjType == 8 or ObjType == 11
 	end
 	b.GetMapId = function()
@@ -515,7 +499,9 @@ function br.unlock:NNUnlock()
 		return 0, 0
 	end
 
-
+	b.UnitIsUnit = function(unit,other)
+		return b.ObjectExists(unit) and b.ObjectExists(other) and b.ObjectPointer(unit) == b.ObjectPointer(other)
+	end
 
 
 	br.unlocker = "NN"
