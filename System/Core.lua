@@ -22,10 +22,8 @@ function br:getUpdateRate()
         else
             updateRate = 0.1
         end
-    elseif br.getOptionValue("Bot Update Rate") == nil then
-        updateRate = 0.1
     else
-        updateRate = br.getOptionValue("Bot Update Rate")
+        updateRate = securecall(tonumber,br.getOptionValue("Bot Update Rate")) or 0.1
     end
     if br.engines.Pulse_Engine then
         br.engines.Pulse_Engine.interval = updateRate
