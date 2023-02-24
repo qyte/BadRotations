@@ -121,8 +121,8 @@ function br.Run()
 		br.read.commonReaders()
 		-- Start Engines
 		br:Engine()
-		br:ObjectManager()
-		br:ObjectTracker()
+		-- br:ObjectManager()
+		-- br:ObjectTracker()
 		-- Complete Loadin
 		br.ChatOverlay("-= BadRotations Loaded =-")
 		br._G.print("Initialization Complete, Finding Previous Settings.")

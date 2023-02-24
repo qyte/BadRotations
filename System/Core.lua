@@ -1,6 +1,17 @@
 local _, br = ...
 br.engines = {}
 
+local securecall = securecall
+local function CreateSimpleTimer(seconds,func)
+    local timer = {interval = seconds}
+    local function tick()
+      C_Timer.After(timer.interval,tick)
+      securecall(func)
+    end
+    C_Timer.After(seconds,tick)
+    return timer
+end
+
 function br:getUpdateRate()
     local updateRate = 0.1
 
@@ -16,20 +27,24 @@ function br:getUpdateRate()
     else
         updateRate = br.getOptionValue("Bot Update Rate")
     end
+    if br.engines.Pulse_Engine then
+        br.engines.Pulse_Engine.interval = updateRate
+    end
     return updateRate
 end
 
+
+
 -- Main Engine
+local CoreExecution
 function br:Engine()
     if br.engines.Pulse_Engine == nil then
-        br.engines.Pulse_Engine = br._G.CreateFrame("Frame", nil, br._G.UIParent)
-        br.engines.Pulse_Engine:SetScript("OnUpdate", br.BadRotationsUpdate)
-        br.engines.Pulse_Engine:Show()
+        br.engines.Pulse_Engine = CreateSimpleTimer(0.1,CoreExecution)
     end
 end
 
 -- Object Manager Engine
-local function ObjectManagerUpdate(self)
+local function ObjectManagerUpdate()
     if br.unlocked then
         if br.data ~= nil and br.data.settings ~= nil and br.data.settings[br.selectedSpec] ~= nil
             and br.data.settings[br.selectedSpec].toggles ~= nil
@@ -46,16 +61,8 @@ local function ObjectManagerUpdate(self)
     end
 end
 
-function br:ObjectManager()
-    if br.engines.OM_Engine == nil then
-        br.engines.OM_Engine = br._G.CreateFrame("Frame", nil, br._G.UIParent)
-        br.engines.OM_Engine:SetScript("OnUpdate", ObjectManagerUpdate)
-        br.engines.OM_Engine:Show()
-    end
-end
-
 -- Object Tracker
-local function ObjectTrackerUpdate(self)
+local function ObjectTrackerUpdate()
     if br.unlocked then
         if br.data ~= nil and br.data.settings ~= nil and br.data.settings[br.selectedSpec] ~= nil
             and br.data.settings[br.selectedSpec].toggles ~= nil
@@ -67,14 +74,6 @@ local function ObjectTrackerUpdate(self)
                 br.objectTracker()
             end
         end
-    end
-end
-
-function br:ObjectTracker()
-    if br.engines.Tracker_Engine == nil then
-        br.engines.Tracker_Engine = br._G.CreateFrame("Frame", nil, br._G.UIParent)
-        br.engines.Tracker_Engine:SetScript("OnUpdate", ObjectTrackerUpdate)
-        br.engines.Tracker_Engine:Show()
     end
 end
 
@@ -95,7 +94,7 @@ local function updateRotationOnSpecChange()
 end
 
 local collectGarbage = true
-function br.BadRotationsUpdate(self)
+function br.BadRotationsUpdate()
     local startTime = br._G.debugprofilestop()
     local LibDraw = br._G.LibStub("LibDraw-BR")
     local Print = br._G["print"]
@@ -299,3 +298,10 @@ function br.BadRotationsUpdate(self)
     end -- End Unlock Check
     br.debug.cpu:updateDebug(startTime, "pulse")
 end -- End Bad Rotations Update Function
+
+
+function CoreExecution()
+    ObjectManagerUpdate()
+    ObjectTrackerUpdate()
+    br.BadRotationsUpdate()
+end
