@@ -126,7 +126,8 @@ function br.getDistanceCalc(Unit1,Unit2,option)
                 end
             end
         end
-        local dist = sqrt(((X2-X1)^2) + ((Y2-Y1)^2) + ((Z2-Z1)^2)) - (PlayerCombatReach + TargetCombatReach) - rangeMod
+        local fx,fy,fz = X2-X1, Y2-Y1, Z2-Z1
+        local dist = sqrt(fx*fx + fy*fy + fz * fz) - (PlayerCombatReach + TargetCombatReach) - rangeMod
         local dist2 = dist + 0.03 * ((13 - dist) / 0.13)
         local dist3 = dist + 0.05 * ((8 - dist) / 0.15) + 1
         local dist4 = dist + (PlayerCombatReach + TargetCombatReach)
