@@ -111,14 +111,9 @@ if not br.metaTable2 then
 		end
 		--Distance
 		function o:RawDistance()
-			local x1, y1, z1 = pX, pY, pZ
-			local x2, y2, z2 = o.posX, o.posY, o.posZ
-			if x1 == nil  or x2 == nil or y1 == nil or y2 == nil or z1 == nil or z2 == nil then
-				return 99
-			else
-				return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2) + ((z2 - z1) ^ 2)) -
-				((pCR or 0) + (br._G.UnitCombatReach(o.unit) or 0)), z2 - z1
-			end
+			-- local x1, y1, z1 = pX, pY, pZ
+			local x2, y2, z2 = self.posX - pX, self.posY - pY, self.posZ - pZ
+			return math.sqrt(x2*x2 + y2*y2 + z2*z2) - ((pCR or 0) + (br._G.UnitCombatReach(self.unit) or 0)), z2
 		end
 		--Add unit to table
 		function o:AddUnit(table)
