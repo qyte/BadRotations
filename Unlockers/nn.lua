@@ -319,7 +319,7 @@ function br.unlock:NNUnlock()
 	b.ObjectExists = ObjectExists
 	b.GetCameraPosition = GetCameraPosition
 	b.UnitFacing = ObjectFacing
-	-- b.ObjectPointer = ObjectPointer
+	b.ObjectPointer = ObjectPointer
 	-- b.TraceLine = TraceLine
 
 	b.GetMousePosition = b.GetCursorPosition
@@ -336,9 +336,6 @@ function br.unlock:NNUnlock()
 	b.CastSpellByName = function(spellName, unit)
 		if unit == nil then return CastSpellByName(spellName) end --b.print("No unit provided to CastSpellByName") end
 		return BRCastSpellByName(spellName, unit)
-	end
-	b.ObjectPointer = function(unit)
-		return type(unit) == "number" and unit or ObjectPointer(unit)
 	end
 
 	b.ObjectID = ObjectID
@@ -401,9 +398,7 @@ function br.unlock:NNUnlock()
 			SetPlayerFacing(arg)
 		end
 	end
-	b.GetObjectWithGUID = function(...)
-		return ...
-	end
+	b.GetObjectWithGUID = ObjectPointer
 	b.IsHackEnabled = function(...) return false end
 	--------------------------------
 	-- math
@@ -459,14 +454,32 @@ function br.unlock:NNUnlock()
 		local AngleToUnit = b.GetAnglesBetweenObjects(obj1, obj2)
 		local AngleDifference = Facing > AngleToUnit and Facing - AngleToUnit or AngleToUnit - Facing
 		local ShortestAngle = AngleDifference < math.pi and AngleDifference or math.pi * 2 - AngleDifference
-		degrees = degrees and b.rad(degrees) / 2 or math.pi / 2
+		degrees = degrees and math.rad(degrees) / 2 or math.pi / 2
 		return ShortestAngle < degrees
 	end
 	--------------------------------
 	-- extra APIs
 	--------------------------------
 	b.AuraUtil = {}
-	b.AuraUtil.FindAuraByName = _G.AuraUtil["FindAuraByName"]
+	b.AuraUtil.FindAuraByName = function(aura,unit,filter)
+		unit = b.ObjectPointer(unit)
+		if not unit then return end
+		local oldfocus = GetFocus()
+		SetFocus(unit)
+		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal,
+		spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod
+		for i=1,100 do
+			name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal,
+			spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = b.UnitAura('focus',i,filter)
+			if name == nil then SetFocus(oldfocus)return end
+			if name == aura then
+				SetFocus(oldfocus)
+				return name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal,
+				spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod
+			end
+		end
+		SetFocus(oldfocus)
+	end
 	b.ObjectIsGameObject = function(obj)
 		local ObjType = b.ObjectType(obj)
 		return ObjType == 8 or ObjType == 11
@@ -483,11 +496,6 @@ function br.unlock:NNUnlock()
 	b.ScreenToWorld = function()
 		return 0, 0
 	end
-
-	b.UnitIsUnit = function(unit,other)
-		return b.ObjectExists(unit) and b.ObjectExists(other) and b.ObjectPointer(unit) == b.ObjectPointer(other)
-	end
-
 
 	br.unlocker = "NN"
 	return true
