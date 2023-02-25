@@ -237,7 +237,7 @@ function br.load()
 	br.timeOfLastLoadingScreen = br._G.GetTime()
 end
 local frame = br._G.CreateFrame("FRAME")
-frame:RegisterEvent("PLAYER_LOGOUT")
+frame:RegisterEvent("PLAYER_LEAVING_WORLD")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("LOADING_SCREEN_ENABLED")
 frame:RegisterEvent("LOADING_SCREEN_DISABLED")
@@ -248,7 +248,7 @@ function frame:OnEvent(event)
 	if event == "LOADING_SCREEN_DISABLED" then
 		br.disablePulse = false
 	end
-	if event == "PLAYER_LOGOUT" then
+	if event == "PLAYER_LEAVING_WORLD" then
 		if br.unlocked then
 			-- Return queue window to previous setting
 			if br._G.C_CVar.GetCVar("SpellQueueWindow") == "0" then
