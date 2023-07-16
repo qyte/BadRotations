@@ -314,7 +314,7 @@ Raidable means if its good to raid with.
 
 |rotation|   author   | patch |coverage|status |    readiness     |last updated|
 |--------|------------|:-----:|:------:|:-----:|:----------------:|-----------:|
-|CuteOne |CuteOne     |10.0.0 |  100%  |Limited|:white_check_mark:|  02/24/2023|
+|CuteOne |CuteOne     |10.0.0 |  100%  |Limited|:white_check_mark:|  03/21/2023|
 |becyTR  |Kuukuukatchu|Unknown|Unknown |Unknown|  :interrobang:   |  02/10/2023|
 
 - Restoration
