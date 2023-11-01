@@ -1,57 +1,101 @@
+---
+-- These functions help in retrieving information about buffs.
+-- Buff functions are stored in br.player.buff and can be utilized by `local buff = br.player.buff` in your profile.
+-- `spell` in the function represent the name in the buffs list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
+-- @module br.player.buff
 local _, br = ...
 if br.api == nil then br.api = {} end
--- buff is the table located at br.player.buff
--- v is the spellID passed from the builder which cycles all the collected buff spells from the spell list for the spec
--- spell in the examples represent the name in the buffs list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
+
 br.api.buffs = function(buff,v)
-    -- br.player.buff.spell.cancel()
+
+    --- Cancel a buff.
+    -- @function buff.spell.cancel
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
     buff.cancel = function(thisUnit,sourceUnit)
         if thisUnit == nil then thisUnit = 'player' end
         if sourceUnit == nil then sourceUnit = 'player' end
         if br.UnitBuffID(thisUnit,v,sourceUnit) ~= nil then
             br._G.RunMacroText("/cancelaura "..br._G.GetSpellInfo(v))
-            -- CancelUnitBuff(thisUnit,v,sourceUnit)
         end
     end
-    -- br.player.buff.spell.count()
+
+    --- Get the count of a buff.
+    -- @function buff.spell.count
+    -- @treturn number
     buff.count = function()
         return tonumber(br.getBuffCount(v))
     end
-    -- br.player.buff.spell.duration()
+
+    --- Get the duration of a buff.
+    -- @function buff.spell.duration
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
+    -- @treturn number
     buff.duration = function(thisUnit,sourceUnit)
         if thisUnit == nil then thisUnit = 'player' end
         if sourceUnit == nil then sourceUnit = 'player' end
         return br.getBuffDuration(thisUnit,v,sourceUnit)
     end
-    -- br.player.buff.spell.exists()
+
+    --- Check if a buff exists.
+    -- @function buff.spell.exists
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
+    -- @treturn bool
     buff.exists = function(thisUnit,sourceUnit)
         if thisUnit == nil then thisUnit = 'player' end
         if sourceUnit == nil then sourceUnit = 'player' end
         return br.UnitBuffID(thisUnit,v,sourceUnit) ~= nil
     end
-    -- br.player.buff.spell.react(), buff detection with small reaction delay
+
+    --- Check if a buff can be reacted to.
+    -- @function buff.spell.react
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
+    -- @treturn bool
     buff.react = function(thisUnit, sourceUnit)
         thisUnit = thisUnit or "player"
         sourceUnit = sourceUnit or "player"
         return br.getBuffReact(thisUnit, v, sourceUnit)
     end
-    -- br.player.buff.spell.remain()
+
+    --- Get the remaining time of a buff.
+    -- @function buff.spell.remain
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
+    -- @treturn number
     buff.remain = function(thisUnit,sourceUnit)
         if thisUnit == nil then thisUnit = 'player' end
         if sourceUnit == nil then sourceUnit = 'player' end
         return math.abs(br.getBuffRemain(thisUnit,v,sourceUnit))
     end
-    -- br.player.buff.spell.remains()
+
+    --- Get the remaining time of a buff. (Duplicate of br.player.buff.spell.remain)
+    -- @function buff.spell.remains
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
+    -- @treturn number
     buff.remains = function(thisUnit,sourceUnit)
         if thisUnit == nil then thisUnit = 'player' end
         if sourceUnit == nil then sourceUnit = 'player' end
         return math.abs(br.getBuffRemain(thisUnit,v,sourceUnit))
     end
-    -- br.player.buff.spell.refresh()
+
+    --- Check if a buff should be refreshed.
+    -- @function buff.spell.refresh
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
+    -- @treturn bool
     buff.refresh = function(thisUnit,sourceUnit)
         return buff.remain(thisUnit,sourceUnit) <= buff.duration(thisUnit,sourceUnit) * 0.3
     end
-    -- br.player.buff.spell.stack()
+
+    --- Get the stack count of a buff.
+    -- @function buff.spell.stack
+    -- @string[opt="player"] thisUnit The unit to check.
+    -- @string[opt="player"] sourceUnit The source of the buff.
+    -- @treturn number
     buff.stack = function(thisUnit,sourceUnit)
         if thisUnit == nil then thisUnit = 'player' end
         if sourceUnit == nil then sourceUnit = 'player' end

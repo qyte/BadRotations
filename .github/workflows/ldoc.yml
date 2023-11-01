@@ -1,0 +1,49 @@
+name: Generate LDoc Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Python dependencies
+      run: pip install beautifulsoup4
+
+    - name: Setup Lua
+      uses: leafo/gh-actions-lua@v8
+      with:
+        luaVersion: "5.1"
+
+    - name: Setup Lua Rocks
+      uses: leafo/gh-actions-luarocks@v4
+
+    - name: Setup dependencies
+      run: luarocks install ldoc
+
+    - name: Build docs
+      run: ldoc .
+
+    - name: Post-process LDoc HTML files
+      run: python .github/scripts/ldoc_post_processing.py
+
+    - name: Copy custom ldoc.css
+      run: cp .github/assets/css/ldoc.css ./docs/
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.5
+      with:
+        branch: gh-pages
+        folder: docs
+        token: ${{ secrets.GITHUB_TOKEN }}
