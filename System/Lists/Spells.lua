@@ -204,7 +204,10 @@ br.lists.spells = {
                 ossuary			            = 219786,
                 tombstone                   = 219809,
                 vampiricBlood               = 55233,
+                vampiricStrength            = 408356,
                 empowerRuneWeapon           = 47568,
+                coagulopathy                = 391477,
+                icyTalons                   = 194878,
             },
             debuffs                         = {
                 asphyxiate                  = 221562,
@@ -232,6 +235,11 @@ br.lists.spells = {
                 voracious                   = 273953,
                 wraithWalk                  = 212552,
                 willOfTheNecropolis         = 206967,
+                unholyGround                = 374265,
+                sanguineGround              = 391458,
+                shatteringBone              = 377640,
+                insatiableBlade             = 377637,
+                heartbreaker                =221536,
             },
         },
         -- Frost
@@ -330,11 +338,13 @@ br.lists.spells = {
                 huddle                      = 91838,
                 necrosis                    = 207346,
                 soulReaper                  = 215711,
-                suddenDoom                  = 81340, --49530,
+                suddenDoom                  = 49530,
                 runicCorruption             = 51460,
                 unholyAssault               = 207289,
 		        unholyBlight 		        = 115989,
                 empowerRuneWeapon           = 47568,
+                commanderOfTheDead          = 390259,
+                summonGargoyle              =61777;
             },
             conduits                        = {
                 convocationOfTheDead        = 338553,
@@ -343,6 +353,9 @@ br.lists.spells = {
                 festeringWound              = 194310,
                 unholyBlight                = 115994,
                 virulentPlague              = 191587,
+                rottenTouch                 = 390275,
+                deathRot                    = 377537,
+                
             },
             glyphs                          = {
 
@@ -350,7 +363,6 @@ br.lists.spells = {
             talents                         = {
                 allWillServe                = 194916,
                 armyOfTheDamned             = 276837,
-                asphyxiate                  = 108194,
                 burstingSores               = 207264,
                 clawingShadows              = 207311,
                 deathsReach                 = 276079,
@@ -360,13 +372,18 @@ br.lists.spells = {
                 harbingerOfDoom             = 276023,
                 infectedClaws               = 207272,
                 pestilence                  = 277234,
-                pestilentPustules           = 194917,
-                spellEater                  = 207321,
                 summonGargoyle              = 49206,
                 unholyAssault               = 207289,
                 unholyBlight                = 115989,
                 unholyPact                  = 319230,
-                wraithWalk                  = 212552
+                wraithWalk                  = 212552,
+                commanderOfTheDead          = 390259,
+                deathRot                    = 377537,
+                improvedDeathCoil           = 377580,
+                coilOfDevastation           = 390270,
+                festermight                 = 377590,
+                rottenTouch                 = 390275,
+                vileContagion               = 390279,
             },
             traits                          = {
                 magusOfTheDead              = 288417,
@@ -440,6 +457,7 @@ br.lists.spells = {
             talents                         = {
                 deathPact                   = 48743,
                 wraithWalk                  = 212552,
+                sacrificialPact             = 327574,
             },
         },
     },
@@ -2307,12 +2325,23 @@ br.lists.spells = {
                 purifiedChi                 = 325092,
                 rushingJadeWind             = 116847,
                 zenMeditation               = 115176,
+                celestialBrew               = 322507,
+                invokeNiuzao                = 132578,
+                counterStrike               = 383800,
+                hitScheme                   = 383696,
+                shuffle                     = 322120,
+                invokeNiuzaoTheBlackOx      = 132578,
+                weaponsOfOrder              = 387184,
+                charredPassions             = 386965,
+                bonedustBrew                = 386276,
             },
             debuffs                         = {
                 breathOfFire                = 146222,
                 moderateStagger             = 124274,
                 heavyStagger                = 124273,
                 kegSmash                    = 121253,
+                weaponsOfOrder              = 387184,
+                bonedustBrew                = 386276,
 
             },
             glyphs                          = {
@@ -2331,18 +2360,24 @@ br.lists.spells = {
                 lightBrewing                = 325093,
                 rushingJadeWind             = 116847,
                 specialDelivery             = 196730,
-                spitfire                    = 242580,
                 summonBlackOxStatue         = 115315,
+                detox                       = 218164,
+                improvedPurifyingBrew       = 343743,
+                invokeNiuzaoTheBlackOx      = 132578,
+                improvedInvokeNiuzaoTheBlackOx = 322740,
+                weaponsOfOrder              = 387184,
+                charredPassions             = 386965,
+                pressTheAdvantage           = 418359,
+                bonedustBrew                = 386276,
             },
         },
         -- Mistweaver
         [270] = {
             abilities                       = {
-                detox                       = 115450,
+                
                 envelopingMist              = 124682,
                 essenceFont                 = 191837,
                 invokeYulon                 = 322118,
-                lifeCocoon                  = 116849,
                 reawaken                    = 212051,
                 renewingMist                = 115151,
                 revival                     = 115310,
@@ -2354,6 +2389,9 @@ br.lists.spells = {
                 fortifyingBrew              = 243435,
                 zenFocusTea                 = 209584,
                 transcendenceTransfer       = 119996,
+                sheilunsGift                = 399491,
+                detox                       = 115450,
+                manaTea                     =115294,
             },
             artifacts                       = {
             },
@@ -2361,7 +2399,7 @@ br.lists.spells = {
                 weaponsOfOrder              = 310454,
                 fortifyingBrew              = 243435,
                 soothingMist                = 115175,
-                renewingMist                = 119611,
+                renewingMist                = 115151,
                 envelopingMist              = 124682,
                 thunderFocusTea             = 116680,
                 lifeCyclesEnvelopingMist    = 197919,
@@ -2378,7 +2416,6 @@ br.lists.spells = {
                 dempenHarm                  = 122278,
                 innervate                   = 29166,
                 symbolOfHope                = 64901,
-                manaTea                     = 197908,
                 wayOfTheCrane               = 216113,
                 essenceFont                 = 191840,
                 risingMist                  = 22170,
@@ -2388,6 +2425,10 @@ br.lists.spells = {
                 ancientTeachingOfTheMonastery = 347553,
                 fallenOrder                 = 326860,
 				vivaciousVivification		= 392883,
+                rushingJadeWind             = 116847,
+                ancientTeachings			= 388023,
+                sheilunsGift                = 399491,
+                manaTea                     = 115867,
             },
             debuffs                         = {
                 mysticTouch                 = 113746,
@@ -2397,20 +2438,23 @@ br.lists.spells = {
             talents                         = {
                 diffuseMagic                = 122783,
                 focusedThunder              = 197895,
-                healingElixir               = 122281,
                 invokeChiJiTheRedCrane      = 325197,
                 lifecycles                  = 197915,
-                manaTea                     = 197908,
                 mistWrap                    = 197900,
                 refreshingJadeWind          = 196725,
                 risingMist                  = 274909,
                 songOfChiJi                 = 198898,
-                spiritOfTheCrane            = 210802,
                 summonJadeSerpentStatue     = 115313,
                 upwelling                   = 274963,
 				faelineStomp				= 388193,
 				zenPulse					= 124081,
 				ancienTeachings				= 388023,
+                invokeYulonTheJadeSerpent   = 322118,
+                lifeCocoon                  = 116849,
+                sheilunsGift                = 399491,
+                spearHandStrike             = 116705,
+                --manaTea                     = 197908,
+
             },
             runeforges                      = {
                 ancientTeachingsOfTheMonastery = 337172,
@@ -2432,7 +2476,9 @@ br.lists.spells = {
                 touchOfKarma                = 122470,
                 grappleWeapon               = 233759,
                 fallenOrder                 = 326860,
-                flashcraft                  = 324631
+                flashcraft                  = 324631,
+                jadefireStomp               = 388193,
+                summonWhiteTigerStatue      = 388686,
             },
             artifacts                       = {
 
@@ -2456,6 +2502,10 @@ br.lists.spells = {
                 whirlingDragonPunch         = 152175,
                 fallenOrder                 = 326860,
                 bonedustBrew                = 325216,
+                teachingsOfTheMonastery     = 202090,
+                jadefireStomp               = 388193,
+                
+
             },
             debuffs                         = {
                 disable                     = 116095,
@@ -2472,17 +2522,20 @@ br.lists.spells = {
                 ascension                   = 115396,
                 danceOfChiJi                = 325201,
                 diffuseMagic                = 122783,
-                energizingElixir            = 115288,
                 eyeOfTheTiger               = 196607,
-                fistOfTheWhiteTiger         = 261947,
-                goodKarma                   = 280195,
                 hitCombo                    = 196740,
-                innerStrength               = 261767,
                 rushingJadeWind             = 116847,
                 serenity                    = 152173,
                 spiritualFocus              = 280197,
                 strikeOfTheWindlord         = 392983,
                 whirlingDragonPunch         = 152175,
+                skyreach                    = 392991,
+                skytouch                    = 405044,
+                detox                       = 218164,
+                jadeFireHarmony             = 391412,
+                bonedustBrew                = 386276,
+                stormEarthAndFire           = 137639,
+            
             },
             traits                          = {
                 gloryOfTheDawn              = 288634,
@@ -2522,6 +2575,10 @@ br.lists.spells = {
                 weaponsOfOrderWW            = 310454, --311054,
                 prideful                    = 340880,
 				vivaciousVivification		= 392883,
+                powerStrikes                = 129914,       --bonus chi proc buff
+                hitCombo                    = 196741,
+                kicksOfFlowingMomentum      = 394944,
+                blackoutReinforcement       = 424454,
             },
             conduits                        = {
                 calculatedStrikes           = 336526,
@@ -2549,7 +2606,7 @@ br.lists.spells = {
                 chiWave                     = 115098,
                 closeToHeart                = 389574,
                 dampenHarm                  = 122278,
-                detox                       = 218164,
+              
                 disable                     = 116095,
                 elusiveMists                = 388681,
                 escapeFromReality           = 394110,
@@ -2557,11 +2614,9 @@ br.lists.spells = {
                 fastFeet                    = 388809,
                 fatalTouch                  = 394123,
                 ferocityOfXuen              = 388674,
-                fortifyingBrew              = 388917,
                 generousPour                = 389575,
                 graceOfTheCrane             = 388811,
                 hastyProvocation            = 328670,
-                improvedDetox               = 388874,
                 improvedParalysis           = 344359,
                 improvedRoll                = 328669,
                 improvedTouchOfDeath        = 322113,
@@ -4781,6 +4836,22 @@ br.lists.spells = {
                 soulshape                       = 310143,
                 soulIgnition                    = 345251,
                 spectralFlaskOfPower            = 307185,
+                elementalPotionOfPower          = 371024,
+                elementalPotionOfUltimatePower  = 371028,
+                phialOfGlacialFury              = 373257,
+                phialOfTepidVersatility         = 371172,
+                icedPhialOfCorruptingRage       = 374000,
+                domineeringArrogance            = 411661,
+
+            },
+            --TODO Add to API
+            itemEnchantments = {
+                --Dragonflight weapon Imbue's from inscription enchantments
+                --Quality of aura should always be GOLD,SILVER,COPPER
+                buzzingRune                     = {6514, 6513, 6512},
+                chirpingRune                    = {6695, 6694, 6515},
+                howlingRune                     = {6518, 6517, 6516},
+                hissingRune                     = {6839, 6837, 6838},
             },
             conduits                            = {
 

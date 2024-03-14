@@ -80,9 +80,15 @@ Raidable means if its good to raid with.
 
 - Blood
 
-|rotation|   author   |patch |coverage|status |  readiness  |last updated|
-|--------|------------|:----:|:------:|:-----:|:-----------:|-----------:|
-|BrewBK  |BrewingCoder|10.2.5|  50%   |Limited|:interrobang:|  02/15/2024|
+|      rotation      |   author   |patch |coverage|status|    readiness     |last updated|
+|--------------------|------------|:----:|:------:|:----:|:----------------:|-----------:|
+|BrewBloodKnight-SimC|BrewingCoder|10.2.5|  100%  | Full |:white_check_mark:|  03/12/2024|
+
+- Unholy
+
+|  rotation  |   author   |patch |coverage|status |  readiness  |last updated|
+|------------|------------|:----:|:------:|:-----:|:-----------:|-----------:|
+|BrewUnholyDK|BrewingCoder|10.2.5|  90%   |Limited|:interrobang:|  03/08/2024|
 
 
 ### Demon Hunter
@@ -119,6 +125,24 @@ Raidable means if its good to raid with.
 
 
 ### Monk
+
+- BrewMaster
+
+|   rotation   |   author   |patch |coverage|        status        |  readiness  |last updated|
+|--------------|------------|:----:|:------:|:--------------------:|:-----------:|-----------:|
+|BrewBrewMaster|BrewingCoder|10.2.5|  90%   |Limited,Hardcoded Vals|:interrobang:|  02/26/2024|
+
+- MistWeaver
+
+|   rotation   |          author           |patch |coverage|status|    readiness     |last updated|
+|--------------|---------------------------|:----:|:------:|:----:|:----------------:|-----------:|
+|BrewMistWeaver|BrewingCoder/SinWeaver/Lylo|10.2.5|  100%  | Full |:white_check_mark:|  03/12/2024|
+
+- WindWalker
+
+|   rotation   |   author   |patch |coverage|status |  readiness  |last updated|
+|--------------|------------|:----:|:------:|:-----:|:-----------:|-----------:|
+|BrewWindWalker|BrewingCoder|10.2.5|  95%   |Limited|:interrobang:|  02/23/2024|
 
 
 ### Paladin
