@@ -42,6 +42,7 @@ local unlockList =
 	"MoveBackwardStop",
 	"MoveForwardStart",
 	"MoveForwardStop",
+	"ObjectType",
 	"PetAssistMode",
 	"PetAttack",
 	"PetDefensiveAssistMode",
@@ -90,7 +91,7 @@ local unlockList =
 	"TargetLastTarget",
 	"TargetNearestEnemy",
 	"TargetNearestFriend",
-	"TargetUnit",
+	-- "TargetUnit",
 	"ToggleAutoRun",
 	"ToggleRun",
 	"TurnLeftStart",
@@ -114,24 +115,27 @@ local globalCacheList =
 	"CheckInteractDistance",
 	"CombatTextSetActiveUnit",
 	"CopyToClipboard",
+	"CreateDirectory",
 	"DemoteAssistant",
+	"DirectoryExists",
 	"DropItemOnUnit",
 	"FollowUnit",
+	"GetAnglesBetweenPositions",
 	"GetDefaultLanguage",
 	"GetPartyAssignment",
 	"GetPlayerInfoByGUID",
-	"GetRaidTargetIndex",
+	"GetPositionFromPosition",
 	"GetReadyCheckStatus",
 	"GetUnitName",
-	"GetUnitSpeed",
 	"InitiateTrade",
-	"InteractUnit",
 	"IsItemInRange",
-	"IsSpellInRange",
+	-- "IsSpellInRange",
 	"PitchDownStart",
 	"PitchDownStop",
 	"PitchUpStart",
 	"PromoteToAssistant",
+	"ReadFile",
+	"ScreenToWorld",
 	"SetPortraitTexture",
 	"SetRaidTarget",
 	"SpellCanTargetUnit",
@@ -142,81 +146,82 @@ local globalCacheList =
 	"SwapRaidSubgroup",
 	"ToggleGameMenu",
 	"ToggleSpellAutocast",
-	"UnitAffectingCombat",
+	"TraceLine",
+	-- "UnitAffectingCombat",
 	"UnitArmor",
 	"UnitAttackPower",
-	"UnitAttackSpeed",
-	"UnitAura",
+	-- "UnitAttackSpeed",
+	-- "UnitAura",
 	"UnitAuraSlots",
-	"UnitBuff",
+	-- "UnitBuff",
 	"UnitCanAssist",
-	"UnitCanAttack",
+	-- "UnitCanAttack",
 	"UnitCanCooperate",
-	"UnitCastingInfo",
-	"UnitChannelInfo",
-	"UnitClass",
-	"UnitClassification",
-	"UnitCreatureFamily",
-	"UnitCreatureType",
+	-- "UnitCastingInfo",
+	-- "UnitChannelInfo",
+	-- "UnitClass",
+	-- "UnitClassification",
+	-- "UnitCreatureFamily",
+	-- "UnitCreatureType",
 	"UnitDamage",
-	"UnitDebuff",
+	-- "UnitDebuff",
 	"UnitDetailedThreatSituation",
-	"UnitExists",
-	"UnitGetIncomingHeals",
+	-- "UnitExists",
+	-- "UnitGetIncomingHeals",
 	"UnitGetTotalHealAbsorbs",
 	"UnitGroupRolesAssigned",
-	"UnitGUID",
-	"UnitHealth",
-	"UnitHealthMax",
+	-- "UnitGUID",
+	-- "UnitHealth",
+	-- "UnitHealthMax",
 	"UnitInBattleground",
-	"UnitInParty",
-	"UnitInRaid",
-	"UnitInRange",
+	-- "UnitInParty",
+	-- "UnitInRaid",
+	-- "UnitInRange",
 	"UnitIsAFK",
-	"UnitIsCharmed",
-	"UnitIsConnected",
+	-- "UnitIsCharmed",
+	-- "UnitIsConnected",
 	"UnitIsCorpse",
 	"UnitIsDead",
-	"UnitIsDeadOrGhost",
+	-- "UnitIsDeadOrGhost",
 	"UnitIsDND",
-	"UnitIsEnemy",
+	-- "UnitIsEnemy",
 	"UnitIsFeignDeath",
-	"UnitIsFriend",
+	-- "UnitIsFriend",
 	"UnitIsGhost",
 	"UnitIsInMyGuild",
-	"UnitIsPlayer",
+	-- "UnitIsPlayer",
 	"UnitIsPossessed",
 	"UnitIsPVP",
 	"UnitIsPVPFreeForAll",
 	"UnitIsPVPSanctuary",
 	"UnitIsSameServer",
-	"UnitIsTrivial",
-	"UnitIsUnit",
-	"UnitIsVisible",
-	"UnitLevel",
-	"UnitName",
-	"UnitOnTaxi",
-	"UnitPhaseReason",
+	-- "UnitIsTrivial",
+	-- "UnitIsUnit",
+	-- "UnitIsVisible",
+	-- "UnitLevel",
+	-- "UnitName",
+	-- "UnitOnTaxi",
+	-- "UnitPhaseReason",
 	"UnitPlayerControlled",
 	"UnitPlayerOrPetInParty",
 	"UnitPlayerOrPetInRaid",
-	"UnitPower",
-	"UnitPower",
-	"UnitPowerMax",
 	"UnitPowerType",
 	"UnitPVPName",
-	"UnitRace",
+	-- "UnitRace",
 	"UnitRangedAttackPower",
 	"UnitRangedDamage",
-	"UnitReaction",
+	-- "UnitReaction",
 	"UnitSelectionColor",
 	"UnitSex",
-	"UnitStat",
-	"UnitThreatSituation",
+	-- "UnitStat",
+	-- "UnitThreatSituation",
+	"UnitTarget",
 	"UnitUsingVehicle",
 	"UnitXP",
 	"UnitXPMax",
-	"UseInventoryItem"
+	"UseInventoryItem",
+	"WorldToScreen",
+	"WriteFile"
 }
 
 
@@ -254,20 +259,6 @@ local function stringsplit(inputstr, sep)
 		table.insert(t, str)
 	end
 	return t
-end
-
-local function fixPath(...)
-	local str = ...
-	if str == nil then return "" end
-
-	if str:match("\\Interface\\AddOns\\") ~= nil then
-		str = str:gsub(str:match("\\Interface\\AddOns\\"), "..\\")
-	end
-	local path = str:gsub(str:match("..\\BadRotations"), "\\scripts\\BadRotations")
-
-	-- local filter = str:gsub(str:match("*.lua"),"*")
-	-- local path = filter:gsub(filter:match("..\\BadRotations"),"\\scripts\\BadRotations")
-	return path
 end
 
 -- make a backup copy of all APIs before AddOns hook them
@@ -314,7 +305,6 @@ function br.unlock:NNUnlock()
 	b.GetObjectWithIndex = ObjectByIndex
 	b.ObjectPosition = ObjectPosition
 	b.UnitMovementFlags = UnitMovementFlag
-	-- b.GetWoWDirectory = GetWowDirectory
 	b.ObjectFacing = ObjectFacing
 	b.ObjectExists = ObjectExists
 	b.GetCameraPosition = GetCameraPosition
@@ -328,14 +318,15 @@ function br.unlock:NNUnlock()
 	b.IsAoEPending = b.SpellIsTargeting
 	b.ObjectInteract = b.ObjectInteract
 	b.InteractUnit = b.ObjectInteract
+	b.GetDistanceBetweenPositions = Distance
+	b.GetDistanceBetweenObjects = Distance
 
-	b.TraceLine = function(unit1X, unit1Y, unit1Z, unit2X, unit2Y, unit2Z, offset)
-		return TraceLine(unit1X, unit1Y, unit1Z, unit2X, unit2Y, unit2Z, offset) == false
-	end
 
 	b.CastSpellByName = function(spellName, unit)
 		if unit == nil then return CastSpellByName(spellName) end --b.print("No unit provided to CastSpellByName") end
-		return BRCastSpellByName(spellName, unit)
+		if type(unit) == number then unit = Object(unit) end
+		return CastSpellByName(spellName, unit)
+		-- return BRCastSpellByName(spellName, unit)
 	end
 
 	b.ObjectID = ObjectID
@@ -355,11 +346,14 @@ function br.unlock:NNUnlock()
 	b.GetObjectCount = function()
 		return #Objects()
 	end
-	b.ObjectType = ObjectType
-	b.ObjectIsUnit = function(obj)
-		local ObjType = b.ObjectType(obj)
-		return ObjType == 5-- or ObjType == 6 or ObjType == 7
+	b.GetObjectWithIndex = function(index)
+		return om[index]
 	end
+
+	b.ObjectIsUnit = function(...)
+		return ObjectType(...) == 5
+	end
+
 	b.UnitCastID = function(...)
 		local spellId1 = select(9, b.UnitCastingInfo(...)) or 0
 		local spellId2 = select(9, b.UnitChannelInfo(...)) or 0
@@ -368,7 +362,9 @@ function br.unlock:NNUnlock()
 	end
 	b.GetDirectoryFiles = function(...)
 		local str = ...
-		if str == nil then return "" end
+		if str == nil or str == "*" then return "" end
+		-- print("str: "..tostring(str))
+		str = str .. "*.lua" --:match("*.lua") or str
 		local filter = str:gsub(str:match("*.lua"), "*")
 		-- print("Filter: "..filter)
 		local files = ListFiles(filter)
@@ -385,11 +381,6 @@ function br.unlock:NNUnlock()
 		end
 		return stringsplit(returnFiles, "|")
 	end
-	b.WorldToScreen = function(...)
-		local multiplier = UIParent:GetScale()
-		local sX, sY = WorldToScreen(...)
-		return sX * multiplier, -sY * multiplier
-	end
 	b.FaceDirection = function(arg)
 		if type(arg) == "number" then
 			SetPlayerFacing(arg)
@@ -400,16 +391,10 @@ function br.unlock:NNUnlock()
 	end
 	b.GetObjectWithGUID = ObjectPointer
 	b.IsHackEnabled = function(...) return false end
+
 	--------------------------------
 	-- math
 	--------------------------------
-	local math = math
-	b.GetDistanceBetweenPositions = function(X1, Y1, Z1, X2, Y2, Z2)
-		X2 = X2 - X1
-		Y2 = Y2 - Y1
-		Z2 = Z2 - Z1
-		return math.sqrt(X2*X2 + Y2*Y2 + Z2*Z2)
-	end
 	b.GetAnglesBetweenObjects = function(Object1, Object2)
 		if Object1 and Object2 then
 			local X1, Y1, Z1 = b.ObjectPosition(Object1)
@@ -457,33 +442,185 @@ function br.unlock:NNUnlock()
 		degrees = degrees and math.rad(degrees) / 2 or math.pi / 2
 		return ShortestAngle < degrees
 	end
-	--------------------------------
-	-- extra APIs
-	--------------------------------
+	------------------------- Miscellaneous -------------------
+	local ObjectUnit = function(unit)
+		return type(unit) == "number" and Object(unit) or unit
+	end
+	b.GetKeyState = GetKeyState
+	b.UnitFacing = b.ObjectFacing
+	b.ObjectInteract = b.InteractUnit
+	b.IsHackEnabled = function(...) return false end
 	b.AuraUtil = {}
 	b.AuraUtil.FindAuraByName = function(aura,unit,filter)
 		unit = b.ObjectPointer(unit)
 		if not unit then return end
 		local oldfocus = GetFocus()
 		SetFocus(unit)
-		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal,
-		spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod
-		for i=1,100 do
-			name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal,
-			spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = b.UnitAura('focus',i,filter)
-			if name == nil then SetFocus(oldfocus)return end
-			if name == aura then
-				SetFocus(oldfocus)
-				return name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal,
-				spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod
-			end
-		end
+		local vals = {_G.AuraUtil.FindAuraByName(aura,'focus',filter)}
 		SetFocus(oldfocus)
+		if not vals[1] then return end
+		return unpack(vals,1,30)
 	end
 	b.ObjectIsGameObject = function(obj)
 		local ObjType = b.ObjectType(obj)
 		return ObjType == 8 or ObjType == 11
 	end
+
+	b.TargetUnit = function(unit)
+		if Object(unit) then
+			return TargetUnit(Object(unit))
+		else
+			return
+		end
+	end
+	b.InteractUnit = function(unit)
+		return ObjectInteract(Object(unit))
+	end
+	------------------------------------------
+	--- API - Unit Function Object Handler ---
+	------------------------------------------
+	-- b.CastSpellByName = function(spell, unit)
+	-- 	return Unlock("CastSpellByName(\""..spell.."\", \""..ObjectUnit(unit).."\")", "")
+	-- end
+	b.GetRaidTargetIndex = function(...)
+		return GetRaidTargetIndex(ObjectUnit(...))
+	end
+	b.GetUnitSpeed = function(...)
+		return GetUnitSpeed(ObjectUnit(...))
+	end
+	b.InSpellInRange = function(spell, unit)
+		return IsSpellInRange(spell, ObjectUnit(unit))
+	end
+	b.UnitAffectingCombat = function(...)
+		return UnitAffectingCombat(ObjectUnit(...))
+	end
+	b.UnitAttackSpeed = function(...)
+		return UnitAttackSpeed(ObjectUnit(...))
+	end
+	b.UnitAura = function(unit, index, filter)
+		return UnitAura(ObjectUnit(unit), index, filter)
+	end
+	b.UnitBuff = function(unit, index, filter)
+		return UnitBuff(ObjectUnit(unit), index, filter)
+	end
+	b.UnitCanAttack = function(unit1, unit2)
+		return UnitCanAttack(ObjectUnit(unit1), ObjectUnit(unit2))
+	end
+	b.UnitCastingInfo = function(...)
+		return UnitCastingInfo(ObjectUnit(...))
+	end
+	b.UnitChannelInfo = function(...)
+		return UnitChannelInfo(ObjectUnit(...))
+	end
+	b.UnitClass = function(...)
+		return UnitClass(ObjectUnit(...))
+	end
+	b.UnitClassification = function(...)
+		return UnitClassification(ObjectUnit(...))
+	end
+	b.UnitCreatureFamily = function(...)
+		return UnitCreatureFamily(ObjectUnit(...))
+	end
+	b.UnitCreatureType = function(...)
+		return UnitCreatureType(ObjectUnit(...))
+	end
+	b.UnitDebuff = function(unit, index, filter)
+		return UnitDebuff(ObjectUnit(unit), index, filter)
+	end
+	b.UnitExists = function(...)
+		return UnitExists(ObjectUnit(...))
+	end
+	b.UnitGetIncomingHeals = function(unit1, unit2)
+		return UnitGetIncomingHeals(ObjectUnit(unit1), ObjectUnit(unit2))
+	end
+	b.UnitGUID = function(...)
+		return UnitGUID(ObjectUnit(...))
+	end
+	b.UnitHealth = function(...)
+		return UnitHealth(ObjectUnit(...))
+	end
+	b.UnitHealthMax = function(...)
+		return UnitHealthMax(ObjectUnit(...))
+	end
+	b.UnitLevel = function(...)
+		return UnitLevel(ObjectUnit(...))
+	end
+	b.UnitName = function(...)
+		return UnitName(ObjectUnit(...))
+	end
+	b.UnitInParty = function(...)
+		return UnitInParty(ObjectUnit(...))
+	end
+	b.UnitInRaid = function(...)
+		return UnitInRaid(ObjectUnit(...))
+	end
+	b.UnitInRange = function(...)
+		return UnitInRange(ObjectUnit(...))
+	end
+	b.UnitIsCharmed = function(...)
+		return UnitIsCharmed(ObjectUnit(...))
+	end
+	b.UnitIsConnected = function(...)
+		return UnitIsConnected(ObjectUnit(...))
+	end
+	b.UnitIsDeadOrGhost = function(...)
+		return UnitIsDeadOrGhost(ObjectUnit(...))
+	end
+	b.UnitIsEnemy = function(unit1, unit2)
+		return UnitIsEnemy(ObjectUnit(unit1), ObjectUnit(unit2))
+	end
+	b.UnitIsFriend = function(unit1, unit2)
+		return UnitIsFriend(ObjectUnit(unit1), ObjectUnit(unit2))
+	end
+	b.UnitIsPlayer = function(...)
+		return UnitIsPlayer(ObjectUnit(...))
+	end
+	b.UnitIsUnit = function(unit1, unit2)
+		return UnitIsUnit(ObjectUnit(unit1), ObjectUnit(unit2))
+	end
+	b.UnitIsVisible = function(...)
+		return UnitIsVisible(ObjectUnit(...))
+	end
+	b.UnitOnTaxi = function(...)
+		return UnitOnTaxi(ObjectUnit(...))
+	end
+	b.UnitPhaseReason = function(...)
+		return UnitPhaseReason(ObjectUnit(...))
+	end
+	b.UnitPower = function(unit, powerType)
+		return UnitPower(ObjectUnit(unit), powerType)
+	end
+	b.UnitPowerMax = function(unit, powerType)
+		return UnitPowerMax(ObjectUnit(unit), powerType)
+	end
+	b.UnitRace = function(...)
+		return UnitRace(ObjectUnit(...))
+	end
+	b.UnitReaction = function(unit1, unit2)
+		return UnitReaction(ObjectUnit(unit1), ObjectUnit(unit2))
+	end
+	b.UnitStat = function(unit, statIndex)
+		return UnitStat(ObjectUnit(unit), statIndex)
+	end
+	b.UnitIsTapDenied = function(...)
+		return UnitIsTapDenied(ObjectUnit(...))
+	end
+	b.UnitThreatSituation = function(unit1, unit2)
+		return UnitThreatSituation(ObjectUnit(unit1), ObjectUnit(unit2))
+	end
+	b.UnitIsTrivial = function(...)
+		return UnitIsTrivial(ObjectUnit(...))
+	end
+
+	--------------------------------
+	-- extra APIs
+	--------------------------------
+	-- b.AuraUtil = {}
+	-- b.AuraUtil.FindAuraByName = _G.AuraUtil["FindAuraByName"]
+	-- b.ObjectIsGameObject = function(...)
+	-- 	local ObjType = ObjectType(...)
+	-- 	return ObjType == 8 or ObjType == 11
+	-- end
 	b.GetMapId = function()
 		return select(8, b.GetInstanceInfo())
 	end
@@ -493,9 +630,7 @@ function br.unlock:NNUnlock()
 	b.IsQuestObject = function(obj)
 		return false
 	end
-	b.ScreenToWorld = function()
-		return 0, 0
-	end
+	b.ScreenToWorld = ScreenToWorld
 
 	br.unlocker = "NN"
 	return true

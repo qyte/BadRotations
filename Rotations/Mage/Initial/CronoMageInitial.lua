@@ -6,22 +6,22 @@ local rotationName = "Crono" -- Change to name of profile listed in options drop
 local function createToggles()
     -- Rotation Button
     local RotationModes = {
-        [1] = {mode = "Auto", value = 1, overlay = "Automatic Rotation", tip = "Swaps between Single and Multiple based on number of targets in range.", highlight = 1, icon = br.player.spell.arcaneExplosion},
-        [2] = {mode = "Sing", value = 2, overlay = "Single Target Rotation", tip = "Single target rotation used.", highlight = 0, icon = br.player.spell.frostbolt}
+        [1] = {mode = "Auto", value = 1, overlay = "Automatic Rotation", tip = "Swaps between Single and Multiple based on number of targets in range.", highlight = 1, icon = br.player.spells.arcaneExplosion},
+        [2] = {mode = "Sing", value = 2, overlay = "Single Target Rotation", tip = "Single target rotation used.", highlight = 0, icon = br.player.spells.frostbolt}
     }
     br.ui:createToggle(RotationModes,"Rotation", 1, 0)
 
     -- Defensive Button
     local DefensiveModes = {
-        [1] = {mode = "On", value = 1, overlay = "Defensive Enabled", tip = "Includes Defensive Cooldowns.", highlight = 1, icon = br.player.spell.frostNova},
-        [2] = {mode = "Off", value = 2, overlay = "Defensive Disabled", tip = "No Defensives will be used.", highlight = 0, icon = br.player.spell.frostNova}
+        [1] = {mode = "On", value = 1, overlay = "Defensive Enabled", tip = "Includes Defensive Cooldowns.", highlight = 1, icon = br.player.spells.frostNova},
+        [2] = {mode = "Off", value = 2, overlay = "Defensive Disabled", tip = "No Defensives will be used.", highlight = 0, icon = br.player.spells.frostNova}
     }
     br.ui:createToggle(DefensiveModes,"Defensive", 2, 0)
 
     -- Interrupt Button
     local InterruptModes = {
-        [1] = {mode = "On", value = 1, overlay = "Interrupts Enabled", tip = "Includes Basic Interrupts.", highlight = 1, icon = br.player.spell.counterspell},
-        [2] = {mode = "Off", value = 2, overlay = "Interrupts Disabled", tip = "No Interrupts will be used.", highlight = 0, icon = br.player.spell.counterspell}
+        [1] = {mode = "On", value = 1, overlay = "Interrupts Enabled", tip = "Includes Basic Interrupts.", highlight = 1, icon = br.player.spells.counterspell},
+        [2] = {mode = "Off", value = 2, overlay = "Interrupts Disabled", tip = "No Interrupts will be used.", highlight = 0, icon = br.player.spells.counterspell}
     }
     br.ui:createToggle(InterruptModes,"Interrupt", 3, 0)
 
@@ -82,17 +82,10 @@ end
 local buff
 local cast
 local cd
-local debuff
-local has
 local mode
-local power
-local talent
 local ui
-local pet
-local spell
 local unit
 local units
-local use
 -- General Locals
 local haltProfile
 local profileStop
@@ -166,16 +159,10 @@ local function runRotation()
     buff                                          = br.player.buff
     cast                                          = br.player.cast
     cd                                            = br.player.cd
-    debuff                                        = br.player.debuff
-    has                                           = br.player.has
     mode                                          = br.player.ui.mode
-    ui                                            = br.player.ui
-    pet                                           = br.player.pet
-    spell                                         = br.player.spell
     ui                                            = br.player.ui
     unit                                          = br.player.unit
     units                                         = br.player.units
-    use                                           = br.player.use
     -- General Locals
     profileStop                                   = profileStop or false
     haltProfile                                   = (unit.inCombat() and profileStop) or br._G.IsMounted() or br.pause() or mode.rotation==4

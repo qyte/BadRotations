@@ -14,6 +14,9 @@ function br.canUseItem(itemID)
 	end
 	if itemID <= 19 then
 		local slotItemID = br._G.GetInventoryItemID("player", itemID)
+		if slotItemID == nil or slotItemID==0 then
+			return false
+		end
 		if br._G.GetItemSpell(slotItemID) ~= nil then
 			if br._G.GetItemCooldown(slotItemID) == 0 and br._G.IsUsableItem(slotItemID) then
 				return true
@@ -69,7 +72,7 @@ function br.useItem(itemID,thisUnit)
 			if br._G.GetItemCooldown(slotItemID) == 0 then
 				if not br.itemSpamDelay or br._G.GetTime() > br.itemSpamDelay then
 					-- br._G.RunMacroText("/use " .. select(1, GetItemInfo(slotItemID)))
-					br._G.UseItemByName(select(1,br._G.GetItemInfo(slotItemID)),thisUnit);
+					br._G.UseItemByName(select(1, br._G.GetItemInfo(slotItemID)), thisUnit);
 					br.itemSpamDelay = br._G.GetTime() + 1
 					return true
 				end
@@ -79,7 +82,7 @@ function br.useItem(itemID,thisUnit)
 		if br._G.GetItemCooldown(itemID) == 0 then
 			if not br.itemSpamDelay or br._G.GetTime() > br.itemSpamDelay then
 				-- br._G.RunMacroText("/use " .. select(1, GetItemInfo(itemID)))
-				br._G.UseItemByName(select(1,br._G.GetItemInfo(itemID)),thisUnit);
+				br._G.UseItemByName(select(1, br._G.GetItemInfo(itemID)), thisUnit);
 				br.itemSpamDelay = br._G.GetTime() + 1
 				return true
 			end
@@ -170,6 +173,7 @@ function br.TierScan(thisTier)
 end
 
 function br.hasEquiped(ItemID, Slot)
+	if ItemID == nil then return false end
 	if br._G.PlayerHasToy(ItemID) then
 		return true
 	end

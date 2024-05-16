@@ -1,50 +1,13 @@
-local NoName = ...
-if --[[(...).name ~= "NoName" or]] NoName.Utils == nil then return end
+local Nn = ...
+-- if --[[(...).name ~= "Nn" or]] Nn == nil then return end
+-- local read   = Nn.Utils.Storage.read
+-- local write  = Nn.Utils.Storage.write
+-- local JSON   = Nn.Utils.JSON
+-- local AceGUI = Nn.Utils.AceGUI
 
-local doprintfiles = (function()
-    local printed = false
-    return function()
-        if printed then return end
-        print('[BR] Copying Media files and reloading...')
-        printed = true
-    end
-end)()
+--Only load BR if in retail 10.2.7 (UI Update); Classic/Cata Not Supported.
+if select(4,GetBuildInfo()) < 100207 then return end
 
-local function CopyMedia()
-    local mediaPath = '/scripts/BadRotations/3rd Party Files/Media/'
-    local wowMediaPath = 'Interface/Addons/Media/'
-    if not DirectoryExists(mediaPath) then error(format('Cannot find Media Directory "%s"', mediaPath), 2) end
-    local needreload = false
-
-    if not DirectoryExists(wowMediaPath) then
-        doprintfiles()
-        needreload = true
-        CreateDirectory(wowMediaPath)
-        if not DirectoryExists(wowMediaPath) then error('Cannot Create "Interface\\Addons\\Media" Directory') end
-    end
-    local files = ListFiles(mediaPath .. '*')
-    for _, v in pairs(files) do
-        if FileExists(mediaPath .. v) and not FileExists(wowMediaPath .. v) then -- exclude '.' and '..' folders cause they error
-            doprintfiles()
-            needreload = true
-            local data = ReadFile(mediaPath .. v)
-            if data then
-                WriteFile(wowMediaPath .. v, data)
-            end
-            if not FileExists(wowMediaPath .. v) then error(format('Cannot Create Media File "%s"',v)) end
-        end
-    end
-    if needreload and not InGlue() then C_Timer.After(2,function() Unlock('ReloadUI') end) return false end
-    return true
-end
-
-if not securecall(CopyMedia) then return end
-if InGlue() then return end
-
-local read   = NoName.Utils.Storage.read
-local write  = NoName.Utils.Storage.write
-local JSON   = NoName.Utils.JSON
-local AceGUI = NoName.Utils.AceGUI
 local toc = ReadFile('/scripts/BadRotations/BadRotations.toc')
 local br = {}
 br.files = {}
@@ -100,10 +63,7 @@ for i = 1, #br.files do
     local file = br.files[i].file
     local load = br.files[i].load
 	if load then
-        -- print("Loading File: /scripts/"..file)
-		NoName:Require('/scripts/'..file, br)
-    -- else
-    --     print("Did not load File: /scripts/"..file)
+        Nn:Require('/scripts/'..file, br)
 	end
 end
 

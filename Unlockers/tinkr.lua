@@ -34,6 +34,7 @@ local unlockList =
 	"DescendStop",
 	"DestroyTotem",
 	"DropItemOnUnit",
+	"FaceObject",
 	"FocusUnit",
 	"FollowUnit",
 	"ForceQuit",
@@ -243,6 +244,7 @@ local File
 function unlock.TinkrUnlock()
 	if not tinkrUnlocked then
         if Unlocker and Unlocker.name == "Tinkr" then
+			br._G.print("Tinkr Unlocker Detected")
             tinkrUnlocked = true
 			File = Unlocker.Util.File
         else
@@ -275,23 +277,28 @@ function unlock.TinkrUnlock()
 			FaceDirection(arg,true)
 		end
 	end
+	
 	b.GetMapId = GetMapID
 	------------------------- Object --------------------------
 	b.ObjectPointer = ObjectGUID
 	b.ObjectExists = function(...) return Object(...) ~= nil end
 	b.ObjectIsVisible = function(...) return Object(...) ~= nil end
 	b.ObjectPosition = ObjectPosition
+	b.ObjectRawPosition = ObjectRawPosition
+	b.MoveToRaw = MoveToRaw
 	b.ObjectFacing = ObjectRotation
 	b.ObjectGUID = ObjectGUID
 	b.ObjectName = ObjectName
 	b.ObjectID = ObjectId
+	b.ObjectType = ObjectType
 	b.ObjectRawType = GameObjectType
 	b.ObjectIsUnit = function(...)
 		local ObjType = ObjectType(...)
 		return ObjType == 5
 	end
 	b.GetDistanceBetweenPositions = function(X1, Y1, Z1, X2, Y2, Z2)
-		return math.sqrt(math.pow(X2 - X1, 2) + math.pow(Y2 - Y1, 2) + math.pow(Z2 - Z1, 2))
+		--return math.sqrt(math.pow(X2 - X1, 2) + math.pow(Y2 - Y1, 2) + math.pow(Z2 - Z1, 2))
+		return FastDistance(X1, Y1, Z1, X2, Y2, Z2)
 	end
 	b.GetAnglesBetweenObjects = function(Object1, Object2)
 		if Object1 and Object2 then
@@ -322,9 +329,10 @@ function unlock.TinkrUnlock()
 		return b.GetPositionFromPosition(X1, Y1, Z1, DistanceFromPosition1, AngleXY, AngleXYZ)
 	end
 	b.GetDistanceBetweenObjects = function(unit1, unit2)
-		local X1, Y1, Z1 = b.ObjectPosition(unit1)
-		local X2, Y2, Z2 = b.ObjectPosition(unit2)
-		return math.sqrt((X2-X1)^2 + (Y2-Y1)^2 + (Z2-Z1)^2)
+		-- local X1, Y1, Z1 = b.ObjectPosition(unit1)
+		-- local X2, Y2, Z2 = b.ObjectPosition(unit2)
+		-- return math.sqrt((X2-X1)^2 + (Y2-Y1)^2 + (Z2-Z1)^2)
+		return ObjectDistance(unit1, unit2)
 	end
 	b.ObjectIsFacing = function(obj1, obj2, degrees)
 		local Facing = b.UnitFacing(obj1)
@@ -411,6 +419,7 @@ function unlock.TinkrUnlock()
 	------------------------- Miscellaneous -------------------
 	b.GetKeyState = GetKeyState
 	b.UnitFacing = b.ObjectFacing
+
 	b.ObjectInteract = b.InteractUnit
     b.IsHackEnabled = function(...) return false end
 	b.AuraUtil = {}

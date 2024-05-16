@@ -1,4 +1,4 @@
----@diagnostic disable: inject-field
+
 local _, br = ...
 if br.api == nil then br.api = {} end
 ----------------------
@@ -81,6 +81,10 @@ br.api.unit = function(self)
     end
     -- Distance
     unit.distance = function(thisUnit,otherUnit)
+        if not otherUnit then
+            otherUnit = thisUnit
+            thisUnit = "player"
+        end
         return br.getDistance(thisUnit,otherUnit)
     end
     -- Dual Wielding
@@ -364,8 +368,8 @@ br.api.unit = function(self)
         return br.isValidUnit(thisUnit)
     end
     -- Weapon Imbue Fuctions
-    self.unit.weaponImbue = self.unit.weaponImbue or {}
-    
+    unit.weaponImbue = unit.weaponImbue or {}
+
     -- Weapon Imbue Exists
     unit.weaponImbue.exists = function(imbueId,offHand)
         local GetWeaponEnchantInfo = br._G["GetWeaponEnchantInfo"]
@@ -390,16 +394,16 @@ br.api.unit = function(self)
         local GetWeaponEnchantInfo = br._G["GetWeaponEnchantInfo"]
         local _, mainExp, _, _, _, offExp = GetWeaponEnchantInfo()
         local timeRemain = 0
-        if offHand and self.unit.weaponImbue.exists(imbueId,true) then timeRemain = offExp - br._G.GetTime() end
-        if not offHand and self.unit.weaponImbue.exists(imbueId) then timeRemain = mainExp - br._G.GetTime() end
+        if offHand and unit.weaponImbue.exists(imbueId,true) then timeRemain = offExp - br._G.GetTime() end
+        if not offHand and unit.weaponImbue.exists(imbueId) then timeRemain = mainExp - br._G.GetTime() end
         return timeRemain > 0 and timeRemain or 0
     end
     -- Weapon Imbue Charges
     unit.weaponImbue.charges = function(imbueId,offHand)
         local GetWeaponEnchantInfo = br._G["GetWeaponEnchantInfo"]
         local _, _, mainCharges, _, _, _, offCharges = GetWeaponEnchantInfo()
-        if offHand and self.unit.weaponImbue.exists(imbueId,true) then return offCharges end
-        if not offHand and self.unit.weaponImbue.exists(imbueId) then return mainCharges end
+        if offHand and unit.weaponImbue.exists(imbueId,true) then return offCharges end
+        if not offHand and unit.weaponImbue.exists(imbueId) then return mainCharges end
         return 0
     end
 end

@@ -6,14 +6,14 @@ local rotationName = "Overlord"
 local function createToggles()
     -- Rotation Button
     local RotationModes = {
-        [1] = { mode = "On", value = 1 , overlay = "Rotation Enabled", tip = "Enable Rotation", highlight = 1, icon = br.player.spell.smite },
-        [2] = {  mode = "Off", value = 4 , overlay = "Rotation Disabled", tip = "Disable Rotation", highlight = 0, icon = br.player.spell.smite }
+        [1] = { mode = "On", value = 1 , overlay = "Rotation Enabled", tip = "Enable Rotation", highlight = 1, icon = br.player.spells.smite },
+        [2] = {  mode = "Off", value = 4 , overlay = "Rotation Disabled", tip = "Disable Rotation", highlight = 0, icon = br.player.spells.smite }
     };
     br.ui:createToggle(RotationModes,"Rotation",1,0)
     -- Defensive Button
     local DefensiveModes = {
-        [1] = { mode = "On", value = 1 , overlay = "Defensive Enabled", tip = "Includes Defensive Cooldowns.", highlight = 1, icon = br.player.spell.powerWordShield},
-        [2] = { mode = "Off", value = 2 , overlay = "Defensive Disabled", tip = "No Defensives will be used.", highlight = 0, icon = br.player.spell.powerWordShield}
+        [1] = { mode = "On", value = 1 , overlay = "Defensive Enabled", tip = "Includes Defensive Cooldowns.", highlight = 1, icon = br.player.spells.powerWordShield},
+        [2] = { mode = "Off", value = 2 , overlay = "Defensive Disabled", tip = "No Defensives will be used.", highlight = 0, icon = br.player.spells.powerWordShield}
     };
     br.ui:createToggle(DefensiveModes,"Defensive",2,0)
 end
@@ -31,6 +31,7 @@ local function createOptions()
         -----------------------
         section = br.ui:createSection(br.ui.window.profile,  "General")
 
+        br.ui:checkSectionState(section)
         -------------------------
         --- DEFENSIVE OPTIONS ---
         -------------------------
@@ -68,14 +69,10 @@ local buff
 local cast
 local cd
 local debuff
-local has
 local mode
 local ui
-local pet
-local spell
 local unit
 local units
-local use
 -- General Locals
 local haltProfile
 local profileStop
@@ -130,15 +127,10 @@ local function runRotation()
     cast                                          = br.player.cast
     cd                                            = br.player.cd
     debuff                                        = br.player.debuff
-    has                                           = br.player.has
     mode                                          = br.player.ui.mode
-    ui                                            = br.player.ui
-    pet                                           = br.player.pet
-    spell                                         = br.player.spell
     ui                                            = br.player.ui
     unit                                          = br.player.unit
     units                                         = br.player.units
-    use                                           = br.player.use
     -- General Locals
     profileStop                                   = profileStop or false
     haltProfile                                   = (unit.inCombat() and profileStop) or IsMounted() or br.pause() or mode.rotation==4
@@ -216,4 +208,4 @@ tinsert(br.rotations[id],{
     toggles = createToggles,
     options = createOptions,
     run = runRotation,
-}) 
+})

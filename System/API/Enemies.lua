@@ -34,7 +34,7 @@ local function setVariable(self,unit,range,checkNoCombat,facing,type,table,count
     -- Build enemies.yards variable
     local insertTable = "yards"..range..type -- Ex: enemies.yards8 (returns all enemies around player in 8yrds), Adds Table Type (r for Rect, c for Cone, blank for Normal)
     if unit ~= "player" then
-        -- letter tag on end based on type of unit passed, if target or enemy unit then "t" otherwise first letter of what is passed in: f - "focus", p - "pet", m - "mouseover", etc 
+        -- letter tag on end based on type of unit passed, if target or enemy unit then "t" otherwise first letter of what is passed in: f - "focus", p - "pet", m - "mouseover", etc
         if br.units[unit] ~= nil then
             insertTable = insertTable.."t" -- Ex: enemies.yards8t (returns all enemies around target in 8yrds)
         else
@@ -46,10 +46,11 @@ local function setVariable(self,unit,range,checkNoCombat,facing,type,table,count
     if self.enemies[insertTable] == nil then self.enemies[insertTable] = {} else br._G.wipe(self.enemies[insertTable]) end
     if count > 0 then br.insertTableIntoTable(self.enemies[insertTable],table) end
 end
+
 br.api.enemies = function(self)
     local enemies = self.enemies
-    if enemies.cone == nil then enemies.cone = {} end
-    if enemies.rect == nil then enemies.rect = {} end
+    enemies.cone = enemies.cone or {}
+    enemies.rect = enemies.rect or {}
 
     --- Returns a table of all enemies around unit for given range, combat situation, and facing
     -- @function enemies.get
