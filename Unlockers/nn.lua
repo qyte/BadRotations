@@ -459,6 +459,7 @@ function br.unlock:NNUnlock()
 		local vals = {_G.AuraUtil.FindAuraByName(aura,'focus',filter)}
 		SetFocus(oldfocus)
 		if not vals[1] then return end
+		if vals[7] == 'focus' then vals[7] = unit end -- fix UnitIsUnit checks
 		return unpack(vals,1,30)
 	end
 	b.ObjectIsGameObject = function(obj)
